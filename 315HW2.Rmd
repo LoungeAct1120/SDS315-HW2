@@ -9,13 +9,13 @@ output: html_document
 knitr::opts_chunk$set(echo = FALSE)
 ```
 
-```{r, messages=FALSE}
+```{r, message=FALSE, warning=FALSE}
 library(tidyverse)
 setwd("C:/Users/ABSmi/Downloads")
 profs <- read_csv("profs.csv")
 ```
 ## Problem 1
-```{r, messages = FALSE}
+```{r, message=FALSE, warning=FALSE}
 # 1 Part A. Create a histogram to display the overall data distribution of course evaluation scores.
 profsplot <- ggplot(profs)
 profsplot + geom_histogram(aes(x=eval)) + labs(title='Distribution of Evaluation scores',y= 'Count',x= 'Evaluation Score')
@@ -23,21 +23,21 @@ profsplot + geom_histogram(aes(x=eval)) + labs(title='Distribution of Evaluation
 
 #### The plot shows the distribution of all evaluation scores of UT professors. The histrogram above shows an almost unimodal distribution of scores skewed to the left. There is a noticible dip at around a score of 4. 
 
-```{r}
+```{r,message=FALSE, warning=FALSE}
 # Part B. Use side-by-side boxplots to show the distribution of course evaluation scores by whether or not the professor is a native English speaker.
 profsplot + geom_boxplot(aes(x=eval),col='black',fill='dark red')  + labs(title='Evaluation Scores Based on if English is Their Native Language',x='Evaluation Score') + facet_wrap(~native,ncol=1)
 ```
 
 #### The boxplots compare the distributions between professors who's first language is English(yes), and professors who's first langauge is not English(no). In the boxplots it is seen that the lower quartile and median of professors who's native language is English is higher than those who's native language is not. The range of native English speakers is also greater than that of non native speakers. Generally, a native English professor will have a higher evaluation score. 
 
-```{r}
+```{r, message=FALSE, warning=FALSE}
 # Part C. Use a faceted histogram with two rows to compare the distribution of course evaluation scores for male and female instructors.
 profsplot + geom_histogram(aes(x=eval),col='black',fill='darkslategrey')  + labs(title='Evaluation Score Based on Sex',x='Score',y='Count') + scale_fill_brewer(type='qual',palette=2) + facet_wrap(~gender,nrow=2)
 ```
 
 #### The plots compare the distributions between male and female professors and their evaluation score. The two distributions are both skewed to the left. It is shown that the range of male proffessors' scores are greater than females. Both medians are around 4, however male professors' median is slighly higher than females. 
 
-```{r}
+```{r, message=FALSE, warning=FALSE}
 # Part D. Create a scatterplot to visualize the extent to which there may be an association between the professor’s physical attractiveness (x) and their course evaluations (y).
 profsplot + geom_point(aes(x=beauty,y=eval)) + labs(title='Relationship Between Beauty and Evaluation Score', x='Beauty', y='Evaluation Score')
 ```
@@ -46,11 +46,12 @@ profsplot + geom_point(aes(x=beauty,y=eval)) + labs(title='Relationship Between 
 
 ***
 ## Problem 2
-```{r}
+```{r,message=FALSE, warning=FALSE}
 setwd("C:/Users/ABSmi/Downloads")
 bikes <- read_csv("bikeshare.csv")
 ```
-```{r}
+
+```{r, message=FALSE, warning=FALSE}
 # Plot A: a line graph showing average hourly bike rentals (total) across all hours of the day (hr).
 bikes_by_hour = bikes %>% 
   group_by(hr) %>%
@@ -62,7 +63,7 @@ bikes_hour_plot + geom_line(aes(x=hr,y=mean_rental)) + labs(title='Mean Rental b
 
 #### The line graph shows the change in average bike rental versus the time of day(in military time). The data is bimodal with the peaks around 8:45 am and 5:00 pm. This is likely due to the average work day starting and ending around those times. 
 
-```{r}
+```{r, message=FALSE, warning=FALSE}
 # Plot B: a faceted line graph showing average bike rentals by hour of the day, faceted according to whether it is a working day (workingday).
 bikes_hr_wrk = bikes %>% 
   group_by(hr,workingday) %>%
@@ -74,7 +75,7 @@ bikes_hr_wrk_plot + geom_line(aes(x=hr,y=mean_rental)) + labs(title='Mean Rental
 
 #### The graphs show the differences in distribution of average bike rentals between a non-workday(0) and a workday(1). The workday is strongly bimodal with the peaks at the beginning and end of the average workday. The non-workday distribution is unimodal and peaks around midday. 
 
-```{r}
+```{r, message=FALSE, warning=FALSE}
 # Plot C: a faceted bar plot showing average ridership (y) during the 9 AM hour by weather situation code (weathersit, x), faceted according to whether it is a working day or not. (Remember that you can focus on a specific subset of rows of a data set using filter.)
 
 bikes_weather <- bikes %>% 
@@ -91,7 +92,7 @@ ggplot(bikes_weather, aes(x = weathersit, y = mean_rentals)) + geom_bar(stat = "
 
 ***
 ## Problem 3
-```{r}
+```{r, message=FALSE, warning=FALSE}
 setwd("C:/Users/ABSmi/Downloads")
 metro <- read_csv("capmetro_UT.csv")
 
@@ -102,7 +103,8 @@ levels=c("Mon", "Tue", "Wed","Thu", "Fri", "Sat", "Sun")),
 month = factor(month,
 levels=c("Sep", "Oct","Nov")))
 ```
-```{r}
+
+```{r,message=FALSE, warning=FALSE}
 # 1. One faceted line graph that plots average boardings by hour of the day, day of week, and month. You should facet by day of week. Each facet should include three lines of average boardings (y) by hour of the day (x), one line for each month and distinguished by color. 
 
 metro_time = metro %>% 
@@ -115,7 +117,7 @@ metro_time_plot + geom_line(aes(x=hour_of_day,y=avg_boarding,group = month, colo
 
 #### The graphs above show the mean number of bus boardings on UT campus by hour for each day of the week. It also shows the difference in each month based on the color of the line. As seen by the peaks in the weekdays, the highest average boarding time is around 4pm. Contrastingly, there is no apparent peaks on weekends. Looking at the Monday graph, it can be seen that the average boardings in September(red) are significantly lower than the other months. This is perhaps due to Labor Day being a holiday in the UT academic calendar. This could also be perhaps caused by start of school partying that impeded students from being on campus Mondays. It can also be seen in the graphs that Wednesday, Thursday, and Friday all have November(blue) as the lowest average. This is likely due to the Thanksgiving holiday, it could also be impacted by end of the semester skipping. 
 
-```{r}
+```{r,message=FALSE, warning=FALSE}
 # 2. One faceted scatter plot showing boardings (y) vs. temperature (x), faceted by hour of the day, and with points colored in according to whether it is a weekday or weekend. 
 
 # Give the figure an informative caption in which you explain what is shown in the figure and also answer the following question, citing evidence from the figure. When we hold hour of day and weekend status constant, does temperature seem to have a noticeable effect on the number of UT students riding the bus? These are exactly the kind of figures that Capital Metro planners might use to understand seasonal and intra-week variation in demand for UT bus service. These are also the kind of figures one would create in the process of building a model to predict ridership.
@@ -127,12 +129,12 @@ metro_weather_plot + geom_point(aes(x = temperature, y = boarding, color = weeke
 
 ***
 ## Problem 4
-```{r}
+```{r, message=FALSE, warning=FALSE}
 setwd("C:/Users/ABSmi/Downloads")
 bill <- read_csv("billboard.csv")
 ```
 
-```{r}
+```{r,message=FALSE, warning=FALSE}
 #Part A: Make a table of the top 10 most popular songs since 1958, as measured by the total number of weeks that a song spent on the Billboard Top 100. Your table should have 10 rows and 3 columns: performer, song, and count, where count represents the number of weeks that song appeared in the Billboard Top 100.
 
 bill_grouped = bill %>% 
@@ -146,7 +148,7 @@ bill_arranged
 ```
 #### The table above is the top 10 songs since 1958 based on the number of weeks it appeared in the charts. The top song based on weeks on the charts is Radioactive by Imagine Dragons; they beat the number 2 song by 8 weeks. 
 
-```{r}
+```{r, message=FALSE, warning=FALSE}
 # Part B: Is the “musical diversity” of the Billboard Top 100 changing over time? Let’s find out. We’ll measure the musical diversity of given year as the number of unique songs that appeared in the Billboard Top 100 that year. Make a line graph that plots this measure of musical diversity over the years. The x axis should show the year, while the y axis should show the number of unique songs appearing at any position on the Billboard Top 100 chart in any week that year. For this part, please filter the data set so that it excludes the years 1958 and 2021, since we do not have complete data on either of those years. 
 
 bill_year <- bill %>%
@@ -161,7 +163,7 @@ bill_year_plot + geom_line(aes(x=year,y=unique_song_count)) + labs(title='Unique
 
 #### The graph above shows the amount of unique songs showing up on the charts based on the year from 1959 to 2020. There is a peak of unique songs around 1967, this could be due to the musical revolution during the 60s. The older generation of the time still listened to big band music, jazz, etc., while the young generation listened to a number of emerging genres. The trend then goes down until a trough around 2001 where the trend picks up, though not consistently, until the end of the graph. 2020 had almost as many unique songs as the 60s.
 
-```{r}
+```{r, message=FALSE, warning=FALSE}
 # Part C: Let’s define a “ten-week hit” as a single song that appeared on the Billboard Top 100 for at least ten weeks. There are 19 artists in U.S. musical history since 1958 who have had at least 30 songs that were “ten-week hits.” Make a bar plot for these 19 artists, showing how many ten-week hits each one had in their musical career. Give the plot an informative caption in which you explain what is shown.
 
 bill_ten = bill %>% 
