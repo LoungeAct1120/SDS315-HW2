@@ -164,11 +164,18 @@ bill_year_plot + geom_line(aes(x=year,y=unique_song_count)) + labs(title='Unique
 ```{r}
 # Part C: Let’s define a “ten-week hit” as a single song that appeared on the Billboard Top 100 for at least ten weeks. There are 19 artists in U.S. musical history since 1958 who have had at least 30 songs that were “ten-week hits.” Make a bar plot for these 19 artists, showing how many ten-week hits each one had in their musical career. Give the plot an informative caption in which you explain what is shown.
 
+bill_ten = bill %>% 
+  group_by(song, performer) %>%
+  summarize(count = max(weeks_on_chart)) %>%
+  filter(count >= 10)
+
+
+bill_art <- bill_ten %>%
+  group_by(performer) %>%
+  summarize(count_art = n_distinct(song)) %>%
+  filter(count_art >= 30) 
+
+ggplot(bill_art, aes(x = reorder(performer, count_art), y = count_art)) + geom_bar(stat = "identity", color = "black",fill='hotpink') + labs(title = "(10-Week Hits for Artist with at Least 30",x = "Artist", y = "Number of 10-Week Hits") + coord_flip()
 ```
 
-```{r}
-# Notes:
-# 1) You might find this easier to accomplish in two distinct sets of data wrangling steps.
-# 2) Make sure that the individuals names of the artists are readable in your plot, and that they’re not all jumbled together. If you find that your plot isn’t readable with vertical bars, you can add a coord_flip() layer to your plot to make the bars (and labels) run horizontally instead.
-# 3) By default a bar plot will order the artists in alphabetical order. This is acceptable to turn in. But if you’d like to order them according to some other variable, you can use the fct_reorder function, described in this blog post. This is optional.
-```
+#### The graph above shows the number of 10-week hits(a song that was on the charts for at least 10 weeks) that the top artists have had. This graph only includes artists that have produced at least thirty 10-week hits. The graph is also in order of highest hits with Elton John at the top, and Brad Paisley at the bottom. Elton John has by far, the highest amount of 10-week hits with 52 songs. 
